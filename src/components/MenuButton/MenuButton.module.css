@@ -1,0 +1,9 @@
+.button {
+  background: none;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+}
