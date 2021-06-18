@@ -1,0 +1,30 @@
+.constructor {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.meals {
+  composes: meals from "../BurgerIngredients/BurgerIngredients.module.css";
+  composes: constructor;
+  max-height: 400px;
+
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.amount {
+  display: flex;
+  align-items: center;
+}
+
+.meal {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+

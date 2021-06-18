@@ -1,0 +1,21 @@
+.page {
+  background-color:#131316;
+  height: 100vh;
+  grid-template-rows: auto 1fr;
+}
+
+.container {
+  display: grid;
+  max-width: 1240px;
+  margin: auto;
+}
+
+.content {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.section {
+  flex: 1 1 300px;
+  max-width: 600px;
+}
