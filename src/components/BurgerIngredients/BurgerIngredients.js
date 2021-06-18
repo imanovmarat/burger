@@ -11,7 +11,7 @@ export class BurgerIngredients extends React.Component {
       prev.push(meal.type);
       return prev;
     }, [])
-    
+
     return (
       <>
           <h1 className="text text_type_main-large pt-10 pb-5">Соберите бургер</h1>
@@ -23,20 +23,20 @@ export class BurgerIngredients extends React.Component {
           </div>
 
           <div className={styles.meals}>
-            {categories.map((categorie, index) => (
+            {categories.map((category, index) => (
               <React.Fragment key={index}>
                 <h2 className="text text_type_main-medium">
                   {
-                    categorie === 'bun' 
-                    ? 'Булки' 
-                    : categorie === 'main'
+                    category === 'bun'
+                    ? 'Булки'
+                    : category === 'main'
                     ? 'Начинка'
-                    : categorie === 'sauce'
+                    : category === 'sauce'
                     ? 'Соус' : 'Что-то пошло не так  :/'
                   }
                 </h2>
                 <div className={`${styles.cards} pt-6 pr-1 pb-10 pl-4`}>
-                  {data.map(meal => categorie === meal.type && (<MealCard key={meal._id} img={meal.image} title={meal.name} price={meal.price}/>))}
+                  {data.map(meal => category === meal.type && (<MealCard key={meal._id} img={meal.image} title={meal.name} price={meal.price}/>))}
                 </div>
               </React.Fragment>
             ))}
@@ -47,7 +47,7 @@ export class BurgerIngredients extends React.Component {
               <MealCard img={img1Path} title="Краторная булка N-200i" price="20" quantity="1"/>
             </div>
             */}
-            
+
           </div>
         </>
     );
