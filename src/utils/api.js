@@ -7,19 +7,16 @@ class Api {
   }
 
   async getIngredients() {
-
-    try {
-      const res = await fetch(`${this._baseUrl}/ingredients`, {
-        headers: { ...this._headers }
+    return fetch(`${this._baseUrl}/ingredients`, {
+      headers: { ...this._headers }
+    })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject('Ошибка запроса getUserInfo');
       });
-      if (res.ok) {
-        return await res.json()
-      } else {
-        throw new Error(res);
-      }
-    } catch (e) {
-      return { msg: e};
-    }
+
   }
 }
 

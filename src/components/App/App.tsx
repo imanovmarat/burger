@@ -7,6 +7,7 @@ import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import api from "../../utils/api";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import OrderDetails from "../OrderDetails/OrderDetails";
+import Modal from "../Modal/Modal";
 
 function App() {
   const [ingredients, setIngredients] = useState([]);
@@ -18,7 +19,9 @@ function App() {
   //Получаем данные из апи
 
   useEffect(() => {
-    api.getIngredients().then(res => setIngredients(res.data));
+    api.getIngredients()
+      .then(res => setIngredients(res.data))
+      .catch(res => console.log(`Возникла ошибка: ${res}`));
   }, [])
 
   //Обрабочик на нажание клавиши esc
@@ -64,8 +67,15 @@ function App() {
           </section>
         </main>
       </div>
-      <IngredientDetails onClose={handleCloseModal} isOpen={isIngredientDetailsModalOpen} ingredient={selectedIngredient}/>
-      <OrderDetails onClose={handleCloseModal} isOpen={isOrderDetailsModalOpen} />
+
+      <Modal onClose={handleCloseModal} isOpen={isIngredientDetailsModalOpen} >
+        <IngredientDetails ingredient={selectedIngredient}/>
+      </Modal >
+
+      <Modal onClose={handleCloseModal} isOpen={isOrderDetailsModalOpen}  >
+        <OrderDetails />
+      </Modal >
+
     </div>
   );
 }

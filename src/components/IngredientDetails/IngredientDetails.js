@@ -1,11 +1,10 @@
 import React from 'react';
-import Modal from "../Modal/Modal";
 import styles from './IngredientDetails.module.css';
+import PropTypes from 'prop-types';
 
-function IngredientDetails({onClose, isOpen, ingredient}) {
+function IngredientDetails({ ingredient }) {
   if (!ingredient) return null;
   return (
-    <Modal onClose={onClose} isOpen={isOpen} title='Детали ингредиента'>
       <div className={styles.container}>
         <figure className={styles.imgWrapper}>
           <img src={ingredient.image_large} alt={ingredient.name}/>
@@ -18,8 +17,24 @@ function IngredientDetails({onClose, isOpen, ingredient}) {
           <li className={`${ styles.item } mr-5 text text_type_main-default text_color_inactive`}><span>Углеводы, г</span>{ingredient.carbohydrates}</li>
         </ul>
       </div>
-    </Modal>
   );
 }
 
 export default IngredientDetails;
+
+const ingredientPropTypes = PropTypes.shape({
+                                              _id: PropTypes.string.isRequired,
+                                              type: PropTypes.string.isRequired,
+                                              proteins: PropTypes.number.isRequired,
+                                              fat: PropTypes.number.isRequired,
+                                              carbohydrates: PropTypes.number.isRequired,
+                                              calories: PropTypes.number.isRequired,
+                                              price: PropTypes.number.isRequired,
+                                              name: PropTypes.string.isRequired,
+                                              image: PropTypes.string.isRequired,
+                                              image_large: PropTypes.string.isRequired,
+                                            });
+
+IngredientDetails.propTypes = {
+  ingredients: PropTypes.arrayOf(ingredientPropTypes.isRequired),
+}

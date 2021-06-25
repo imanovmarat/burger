@@ -8,7 +8,7 @@ import {
 import styles from "./BurgerConstructor.module.css";
 import PropTypes from "prop-types";
 
-export function BurgerConstructor({ ingredients, onOrderButtonClick}) {
+export function BurgerConstructor({ ingredients, onOrderButtonClick }) {
   if (!ingredients) return null;
   const chosenBun = ingredients[0];
   const ingredientList = ingredients.filter(meal => meal.type !== 'bun');
@@ -16,6 +16,24 @@ export function BurgerConstructor({ ingredients, onOrderButtonClick}) {
   const handleButtonClick = () => {
     onOrderButtonClick();
   }
+
+  // Считаем сумму бургера
+  let amount = chosenBun?.price * 2 || 0;
+
+  const renderElement = ingredientList.map((meal) => {
+    //добавляю в сумму
+    amount += meal.price;
+    return (<div className={styles.meal} key={meal._id}>
+      <div className="mr-2">
+        <DragIcon type="primary"/>
+      </div>
+      <ConstructorElement
+        text={meal.name}
+        price={meal.price}
+        thumbnail={meal.image_mobile}
+      />
+    </div>)
+  })
   return (
     <>
       <div className={styles.constructor}>
@@ -30,19 +48,7 @@ export function BurgerConstructor({ ingredients, onOrderButtonClick}) {
         </div>
 
         <div className={`${styles.meals} pr-1`}>
-          {ingredientList.map((meal) => (
-            <div className={styles.meal} key={meal._id}>
-              <div className="mr-2">
-                <DragIcon type="primary"/>
-              </div>
-              <ConstructorElement
-                text={meal.name}
-                price={meal.price}
-                thumbnail={meal.image_mobile}
-              />
-            </div>
-
-          ))}
+          {renderElement}
         </div>
         <div className="pl-8">
           <ConstructorElement
@@ -56,7 +62,7 @@ export function BurgerConstructor({ ingredients, onOrderButtonClick}) {
       </div>
       <div className={`${styles.container} mt-10`}>
         <div className={`${styles.amount} mr-10`}>
-          <span className="text text_type_digits-medium mr-2">600</span>
+          <span className="text text_type_digits-medium mr-2">{amount}</span>
           <CurrencyIcon type="primary"/>
         </div>
         <Button type="primary" size="large" onClick={handleButtonClick}>Нажми на меня</Button>
