@@ -18,6 +18,22 @@ class Api {
       });
 
   }
+
+  sendOrder({ingredients}) {
+    return fetch(`${this._baseUrl}/orders`, {
+      method: 'POST',
+      headers: { ...this._headers },
+      body: JSON.stringify({
+         ingredients: ingredients
+      })
+    })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject('Ошибка запроса getUserInfo');
+      });
+  }
 }
 
 const api = new Api({

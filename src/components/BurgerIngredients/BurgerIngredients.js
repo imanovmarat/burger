@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./BurgerIngredients.module.css";
 import PropTypes from 'prop-types';
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import MealCard from "../MealCard/MealCard";
+import { IngredientsContext } from "../../contexts/IngredientsContext";
 
- function BurgerIngredients({ ingredients, onClick }) {
+function BurgerIngredients({ onClick }) {
+
+  const ingredients = useContext(IngredientsContext);
+
   const categories = ingredients?.reduce((prev, meal) => {
     if (prev.includes(meal.type)) return prev;
     prev.push(meal.type);
