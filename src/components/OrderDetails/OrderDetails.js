@@ -1,11 +1,12 @@
 import React from 'react';
 import styles from './OrderDetails.module.css'
 import checkMarkIconPath from '../../images/CheckMark.svg'
+import PropTypes from 'prop-types';
 
-function OrderDetails() {
+function OrderDetails({ orderInformation }) {
   return (
     <div className={styles.container}>
-      <p className={`${styles.title} text text_type_digits-large mt-20 mb-8`}>034536</p>
+      <p className={`${styles.title} text text_type_digits-large mt-20 mb-8`}>{orderInformation}</p>
       <p className="text text_type_main-medium mb-15">идентификатор заказа</p>
       <div className="mb-15">
         <img src={checkMarkIconPath} alt="Иконка галочкой"/>
@@ -18,3 +19,7 @@ function OrderDetails() {
 }
 
 export default OrderDetails;
+
+OrderDetails.propTypes = {
+  orderInformation: PropTypes.number.isRequired
+}

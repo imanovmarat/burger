@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./BurgerIngredients.module.css";
 import PropTypes from 'prop-types';
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import MealCard from "../MealCard/MealCard";
+import { IngredientsContext } from "../../contexts/IngredientsContext";
 
- function BurgerIngredients({ ingredients, onClick }) {
+function BurgerIngredients({ onClick }) {
+
+  const ingredients = useContext(IngredientsContext);
+
   const categories = ingredients?.reduce((prev, meal) => {
     if (prev.includes(meal.type)) return prev;
     prev.push(meal.type);
@@ -55,20 +59,7 @@ import MealCard from "../MealCard/MealCard";
 
 export default BurgerIngredients;
 
-const ingredientPropTypes = PropTypes.shape({
-                                              _id: PropTypes.string.isRequired,
-                                              type: PropTypes.string.isRequired,
-                                              proteins: PropTypes.number.isRequired,
-                                              fat: PropTypes.number.isRequired,
-                                              carbohydrates: PropTypes.number.isRequired,
-                                              calories: PropTypes.number.isRequired,
-                                              price: PropTypes.number.isRequired,
-                                              name: PropTypes.string.isRequired,
-                                              image: PropTypes.string.isRequired,
-                                              image_large: PropTypes.string.isRequired,
-                                         });
-
 BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropTypes.isRequired),
+
   onClick: PropTypes.func.isRequired
 }

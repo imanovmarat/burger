@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useReducer, useEffect, useState } from "react";
 import {
   Button,
   ConstructorElement,
@@ -7,22 +7,50 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./BurgerConstructor.module.css";
 import PropTypes from "prop-types";
+import { IngredientsContext } from "../../contexts/IngredientsContext";
 
-export function BurgerConstructor({ ingredients, onOrderButtonClick }) {
-  if (!ingredients) return null;
-  const chosenBun = ingredients[0];
-  const ingredientList = ingredients.filter(meal => meal.type !== 'bun');
+export function BurgerConstructor({ onOrderButtonClick }) {
+  const ingredients = useContext(IngredientsContext);
 
-  const handleButtonClick = () => {
-    onOrderButtonClick();
+  const total = { amount: 0 };
+
+  function reducer(state, action) {
+    switch (action.type) {
+      case 'add':
+        return { amount: state.amount + action.payload };
+      case 'sub':
+        return { amount: state.amount - action.payload };
+      default:
+        throw new Error(`Wrong type of action: ${action.type}`);
+    }
   }
 
-  // Считаем сумму бургера
-  let amount = chosenBun?.price * 2 || 0;
+  const [state, dispatcher] = useReducer(reducer, total, undefined)
+  const [chosenBun, setChosenBuh] = useState();
+  const [ingredientList, setIngredientList] = useState([]);
 
-  const renderElement = ingredientList.map((meal) => {
-    //добавляю в сумму
-    amount += meal.price;
+  // Этот эффект мне и самому не нравится, много намешано. Тут я отфильтровываю булки и считаю стоимость.
+
+  useEffect(()=> {
+    const ingredientWithoutBuhs = ingredients.filter(meal => {
+      if (meal.type !== 'bun') {
+        dispatcher({ type: 'add', payload: meal.price });
+      } else {
+        setChosenBuh(meal);
+        dispatcher({ type: 'add', payload: meal.price * 2 });
+      }
+      return meal.type !== 'bun'
+    });
+    setIngredientList(ingredientWithoutBuhs);
+  }, [ingredients])
+
+  const handleButtonClick = () => {
+    const ingredientIds = ingredientList.map((i) => i._id);
+    ingredientIds.push(chosenBun._id);
+    onOrderButtonClick({ ingredientIds });
+  }
+
+  const renderElement = ingredientList?.map((meal) => {
     return (<div className={styles.meal} key={meal._id}>
       <div className="mr-2">
         <DragIcon type="primary"/>
@@ -62,10 +90,10 @@ export function BurgerConstructor({ ingredients, onOrderButtonClick }) {
       </div>
       <div className={`${styles.container} mt-10`}>
         <div className={`${styles.amount} mr-10`}>
-          <span className="text text_type_digits-medium mr-2">{amount}</span>
+          <span className="text text_type_digits-medium mr-2">{state.amount}</span>
           <CurrencyIcon type="primary"/>
         </div>
-        <Button type="primary" size="large" onClick={handleButtonClick}>Нажми на меня</Button>
+        {ingredients.length && <Button type="primary" size="large" onClick={handleButtonClick}>Нажми на меня</Button>}
       </div>
     </>
   );
@@ -73,20 +101,6 @@ export function BurgerConstructor({ ingredients, onOrderButtonClick }) {
 
 export default BurgerConstructor;
 
-const ingredientPropTypes = PropTypes.shape({
-                                              _id: PropTypes.string.isRequired,
-                                              type: PropTypes.string.isRequired,
-                                              proteins: PropTypes.number.isRequired,
-                                              fat: PropTypes.number.isRequired,
-                                              carbohydrates: PropTypes.number.isRequired,
-                                              calories: PropTypes.number.isRequired,
-                                              price: PropTypes.number.isRequired,
-                                              name: PropTypes.string.isRequired,
-                                              image: PropTypes.string.isRequired,
-                                              image_large: PropTypes.string.isRequired,
-                                            });
-
 BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropTypes.isRequired),
   onOrderButtonClick: PropTypes.func.isRequired
 }
