@@ -1,8 +1,11 @@
 import React from "react";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./MealCard.module.css";
+import PropTypes from "prop-types";
 
 export function MealCard({ data, onClick}) {
+
+  console.log(data)
 
   const handleCardClick = () => {
     console.log('cliccc')
@@ -25,3 +28,19 @@ export function MealCard({ data, onClick}) {
 }
 
 export default MealCard;
+
+MealCard.propTypes = {
+  data: PropTypes.shape({
+                          _id: PropTypes.string.isRequired,
+                          type: PropTypes.string.isRequired,
+                          proteins: PropTypes.number.isRequired,
+                          fat: PropTypes.number.isRequired,
+                          carbohydrates: PropTypes.number.isRequired,
+                          calories: PropTypes.number.isRequired,
+                          price: PropTypes.number.isRequired,
+                          name: PropTypes.string.isRequired,
+                          image: PropTypes.string.isRequired,
+                          image_large: PropTypes.string.isRequired,
+                        }).isRequired,
+  onClick: PropTypes.func.isRequired
+}

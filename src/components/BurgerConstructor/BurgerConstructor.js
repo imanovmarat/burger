@@ -45,7 +45,7 @@ export function BurgerConstructor({ onOrderButtonClick }) {
   }, [ingredients])
 
   const handleButtonClick = () => {
-    let ingredientIds = ingredientList.map((i) => i._id);
+    const ingredientIds = ingredientList.map((i) => i._id);
     ingredientIds.push(chosenBun._id);
     onOrderButtonClick({ ingredientIds });
   }
