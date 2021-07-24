@@ -2,20 +2,32 @@ import React from "react";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./MealCard.module.css";
 import PropTypes from "prop-types";
+import { useDrag } from "react-dnd";
+import { nanoid } from "nanoid";
+import { useSelector } from "react-redux";
 
-export function MealCard({ data, onClick}) {
-
-  console.log(data)
-
+export function MealCard({ data, onClick }) {
   const handleCardClick = () => {
+    console.log(data._id)
     console.log('cliccc')
     onClick(data);
   }
 
+  const { selectedIngredients } = useSelector( store => store?.ingredientsReducer)
+  const quantity = selectedIngredients.filter(i => i?.id === data._id).length
+
+  const itemId =  nanoid();
+  const [, ref] = useDrag({
+                                      type: 'items',
+                                      item: {
+                                        id: data._id,
+                                      itemId,
+                                      type: data.type},
+                                    });
   return (
-    <article className={styles.container} onClick={handleCardClick}>
+    <article ref={ref} className={styles.container} onClick={handleCardClick}>
       <div className={`${styles.img_wrap} pl-4 pr-4`}>
-        {data.quantity && (<div className={`${styles.quantity} text text_type_digits-default`}>{data.quantity}</div>)}
+        {quantity && (<div className={`${styles.quantity} text text_type_digits-default`}>{quantity}</div>)}
         <img src={data.image} alt={data.name} className={styles.image}/>
       </div>
       <div className={`${styles.currency} mt-1`}>

@@ -14,7 +14,7 @@ class Api {
         if (res.ok) {
           return res.json();
         }
-        return Promise.reject('Ошибка запроса getUserInfo');
+        return Promise.reject('Ошибка запроса getIngredients');
       });
 
   }
@@ -31,7 +31,7 @@ class Api {
         if (res.ok) {
           return res.json();
         }
-        return Promise.reject('Ошибка запроса getUserInfo');
+        return Promise.reject('Ошибка запроса sendOrder');
       });
   }
 }

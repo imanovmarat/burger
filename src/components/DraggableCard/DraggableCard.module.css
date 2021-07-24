@@ -1,0 +1,6 @@
+.meal {
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}

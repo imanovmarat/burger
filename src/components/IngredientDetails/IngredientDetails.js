@@ -1,8 +1,12 @@
 import React from 'react';
 import styles from './IngredientDetails.module.css';
 import PropTypes from 'prop-types';
+import { useSelector } from "react-redux";
 
-function IngredientDetails({ ingredient }) {
+function IngredientDetails() {
+
+  const { selectedIngredient: ingredient }  = useSelector( store => store?.ingredientDetailsReducer)
+
   if (!ingredient) return null;
   return (
       <div className={styles.container}>
