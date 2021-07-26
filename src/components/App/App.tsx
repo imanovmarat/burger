@@ -94,11 +94,11 @@ function App() {
       </div>
 
       <Modal onClose={handleCloseModal} isOpen={isIngredientDetailsModalOpen}>
-        <IngredientDetails/>
+        <IngredientDetails />
       </Modal>
 
       <Modal onClose={handleCloseModal} isOpen={isOrderDetailsModalOpen}>
-        <OrderDetails/>
+        <OrderDetails />
       </Modal>
 
     </div>
