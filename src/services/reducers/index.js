@@ -1,23 +1,16 @@
 import { combineReducers } from 'redux';
-
-import {
-  GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_FAILED, GET_INGREDIENTS_SUCCESS,
-  GET_SELECTED_INGREDIENTS, ADD_SELECTED_INGREDIENT, REMOVE_SELECTED_INGREDIENT, CHANGE_SELECTED_INGREDIENTS_ORDER
-
-} from "../actions";
-import { ingredientDetailsReducer } from "./modal";
-
+import { GET_INGREDIENTS_FAILED, GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_SUCCESS } from "../actions";
+import { ingredientDetails } from "./ingredientDetailsModal";
+import { orderDetails } from "./orderDetailsModal";
+import { burgerConstructor } from "./burgerConstructor";
 
 const initialState = {
   ingredients: [],
-  selectedIngredients: [],
-  order: {},
-
   ingredientsRequest: false,
   ingredientsFailed: false,
 };
 
-export const ingredientsReducer = (state = initialState, action) => {
+export const ingredients = (state = initialState, action) => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST: {
       return {
@@ -48,33 +41,6 @@ export const ingredientsReducer = (state = initialState, action) => {
         ingredientsRequest: false
       };
     }
-    case CHANGE_SELECTED_INGREDIENTS_ORDER: {
-      const dragCard = state.selectedIngredients[action.payload.dragIndex]
-      const newSelectedIngredients = [...state.selectedIngredients];
-      newSelectedIngredients.splice(action.payload.dragIndex, 1);
-      newSelectedIngredients.splice(action.payload.hoverIndex, 0, dragCard);
-      return {
-        ...state,
-        selectedIngredients: newSelectedIngredients
-      };
-    }
-    case GET_SELECTED_INGREDIENTS: {
-      return {
-        ...state
-      };
-    }
-    case ADD_SELECTED_INGREDIENT: {
-      return {
-        ...state,
-        selectedIngredients: [...state.selectedIngredients, action.payload]
-      };
-    }
-    case REMOVE_SELECTED_INGREDIENT: {
-      return {
-        ...state,
-        selectedIngredients: state.selectedIngredients.filter(i => i?.itemId !== action.payload.itemId)
-      };
-    }
     default: {
       return state
     }
@@ -82,4 +48,4 @@ export const ingredientsReducer = (state = initialState, action) => {
 }
 
 
-export const rootReducer = combineReducers({ingredientsReducer, ingredientDetailsReducer})
+export const rootReducer = combineReducers({ ingredients, ingredientDetails, orderDetails, burgerConstructor })

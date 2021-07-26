@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 function IngredientDetails() {
 
-  const { selectedIngredient: ingredient }  = useSelector( store => store?.ingredientDetailsReducer)
+  const { selectedIngredient: ingredient }  = useSelector(({ ingredientDetails }) => ingredientDetails)
 
   if (!ingredient) return null;
   return (

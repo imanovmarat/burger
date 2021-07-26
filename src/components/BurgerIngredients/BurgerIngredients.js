@@ -9,14 +9,12 @@ import { getIngredients } from "../../services/actions";
 function BurgerIngredients({ onClick }) {
 
   const dispatch = useDispatch();
-  const { ingredients } = useSelector( store => store?.ingredientsReducer)
+  const { ingredients } = useSelector(({ ingredients }) => ingredients)
 
 
   useEffect(() => {
     dispatch(getIngredients());
   }, [dispatch])
-
-  // const ingredients = useContext(IngredientsContext);
 
   const categories = ingredients?.reduce((prev, meal) => {
     if (prev.includes(meal.type)) return prev;
@@ -28,7 +26,7 @@ function BurgerIngredients({ onClick }) {
   const scrollContainerRef = React.useRef(null);
   const elemRefs = React.useRef({});
 
-  function titleCategory (title) {
+  function titleCategory(title) {
     switch (title) {
       case 'bun':
         return 'Булки';
@@ -62,16 +60,12 @@ function BurgerIngredients({ onClick }) {
   };
 
 
-
   return (
     <>
       <h1 className="text text_type_main-large pt-10 pb-5">Соберите бургер</h1>
 
       <div className={`${styles.tabs} mb-10`}>
-        {categories?.map(i => <Tab key={i} value={i} active={i === nearest} onClick={null}>{titleCategory(i)}</Tab> )}
-{/*        <Tab value="one" active={true} onClick={() => {}}>Булки</Tab>
-        <Tab value="two" active={false} onClick={() => {}}>Соусы</Tab>
-        <Tab value="three" active={false} onClick={() => {}}>Начинки</Tab>*/}
+        {categories?.map(i => <Tab key={i} value={i} active={i === nearest} onClick={null}>{titleCategory(i)}</Tab>)}
       </div>
 
       <div className={styles.meals} ref={scrollContainerRef} onScroll={handleScroll}>
@@ -88,18 +82,10 @@ function BurgerIngredients({ onClick }) {
             </h2>
             <div className={`${styles.cards} pt-6 pr-1 pb-10 pl-4`}>
               {ingredients.map(meal => category === meal.type && (
-                <MealCard key={meal._id} data={meal} onClick={onClick} />))}
+                <MealCard key={meal._id} data={meal} onClick={onClick}/>))}
             </div>
           </React.Fragment>
         ))}
-
-        {/* Для примера
-            <h2 className="text text_type_main-medium">Начинки</h2>
-            <div className={`${styles.cards} pt-6 pr-1 pb-10 pl-4`}>
-              <MealCard img={img1Path} title="Краторная булка N-200i" price="20" quantity="1"/>
-            </div>
-            */}
-
       </div>
     </>
   );

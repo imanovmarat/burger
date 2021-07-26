@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import styles from "./App.module.css";
 
 import AppHeader from "../AppHeader/AppHeader";
@@ -11,18 +11,14 @@ import Modal from "../Modal/Modal";
 
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
-
-import {IngredientsContext} from "../../contexts/IngredientsContext";
 import {useDispatch, useSelector} from "react-redux";
-import {INGREDIENT_DETAILS_SET_STATUS, INGREDIENT_DETAILS_SET_VALUE} from "../../services/actions/modal";
-import {ADD_SELECTED_INGREDIENT} from "../../services/actions";
+import {
+  INGREDIENT_DETAILS_SET_STATUS,
+  INGREDIENT_DETAILS_SET_VALUE
+} from "../../services/actions/ingredientDetailsModal";
+import {ORDER_DETAILS_SET_STATUS, ORDER_DETAILS_SET_VALUE} from "../../services/actions/orderDetailsModal";
 
 function App() {
-  const [ingredients,] = useState([]);
-  const [isIngredientDetailsModalOpen, setIsIngredientDetailsModalOpen] = useState(false)
-  const [isOrderDetailsModalOpen, setIsOrderDetailsModalOpen] = useState(false)
-  const [selectedIngredient, setSelectedIngredient] = useState(null)
-  const [orderInformation, setOrderInformation] = useState(0);
 
   const dispatch = useDispatch();
 
@@ -48,20 +44,18 @@ function App() {
     })
     dispatch({
       type: INGREDIENT_DETAILS_SET_STATUS,
-      isModalOpen: true
+      payload: {isModalOpen: true}
     })
-    /*setIsIngredientDetailsModalOpen(true);
-    setSelectedIngredient(ing);*/
   }
 
-  const {isModalOpen} = useSelector(store => (store as any).ingredientDetailsReducer)
+  const {isModalOpen: isIngredientDetailsModalOpen} = useSelector(store => (store as any).ingredientDetails);
+  const {isModalOpen: isOrderDetailsModalOpen} = useSelector(store => (store as any).orderDetails);
 
   const handleSendOrderClick = ({ingredientIds}: any) => {
-    console.log(ingredientIds);
-    api.sendOrder({ingredients})
+    api.sendOrder({ingredients: ingredientIds})
       .then(res => {
-        setOrderInformation(res?.order?.number);
-        setIsOrderDetailsModalOpen(true);
+        dispatch({type: ORDER_DETAILS_SET_VALUE, payload: {orderId: res.order.number}})
+        dispatch({type: ORDER_DETAILS_SET_STATUS, payload: {isModalOpen: true}})
       })
       .catch(res => console.log(`Возникла ошибка: ${res}`));
 
@@ -70,20 +64,17 @@ function App() {
   const handleCloseModal = () => {
     dispatch({
       type: INGREDIENT_DETAILS_SET_STATUS,
-      isModalOpen: false
+      payload: {isModalOpen: false}
     })
-    /*    setIsIngredientDetailsModalOpen(false);
-        setSelectedIngredient(null);
-        setIsOrderDetailsModalOpen(false);*/
-  }
-
-  const handleDrop = (itemData:any) => {
-    console.log('itemId ', itemData)
     dispatch({
-      type: ADD_SELECTED_INGREDIENT,
-      payload: itemData
+      type: INGREDIENT_DETAILS_SET_VALUE,
+      payload: {}
     })
-  };
+    dispatch({
+      type: ORDER_DETAILS_SET_STATUS,
+      payload: {isModalOpen: false}
+    })
+  }
 
 
   return (
@@ -92,24 +83,22 @@ function App() {
       <div className={styles.container}>
         <main className={styles.content}>
           <DndProvider backend={HTML5Backend}>
-            <IngredientsContext.Provider value={ingredients}>
-              <section className={`${styles.section} mr-10`}>
-                <BurgerIngredients onClick={handleOpenModal}/>
-              </section>
-              <section className={`${styles.section} pt-25 pl-4`}>
-                <BurgerConstructor onOrderButtonClick={handleSendOrderClick} onDropHandler={handleDrop}/>
-              </section>
-            </IngredientsContext.Provider>
+            <section className={`${styles.section} mr-10`}>
+              <BurgerIngredients onClick={handleOpenModal}/>
+            </section>
+            <section className={`${styles.section} pt-25 pl-4`}>
+              <BurgerConstructor onOrderButtonClick={handleSendOrderClick}/>
+            </section>
           </DndProvider>
         </main>
       </div>
 
-      <Modal onClose={handleCloseModal} isOpen={isModalOpen}>
+      <Modal onClose={handleCloseModal} isOpen={isIngredientDetailsModalOpen}>
         <IngredientDetails/>
       </Modal>
 
       <Modal onClose={handleCloseModal} isOpen={isOrderDetailsModalOpen}>
-        <OrderDetails orderInformation={orderInformation}/>
+        <OrderDetails/>
       </Modal>
 
     </div>

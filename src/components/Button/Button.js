@@ -6,7 +6,6 @@ function Button({ children, onClick }) {
 
   const handleClick = (e) => {
    onClick(e);
-    console.log('click')
   }
 
   return (
