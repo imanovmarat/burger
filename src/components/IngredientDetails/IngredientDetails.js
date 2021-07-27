@@ -1,8 +1,12 @@
 import React from 'react';
 import styles from './IngredientDetails.module.css';
 import PropTypes from 'prop-types';
+import { useSelector } from "react-redux";
 
-function IngredientDetails({ ingredient }) {
+function IngredientDetails() {
+
+  const { selectedIngredient: ingredient }  = useSelector(({ ingredientDetails }) => ingredientDetails)
+
   if (!ingredient) return null;
   return (
       <div className={styles.container}>
@@ -21,20 +25,3 @@ function IngredientDetails({ ingredient }) {
 }
 
 export default IngredientDetails;
-
-const ingredientPropTypes = PropTypes.shape({
-                                              _id: PropTypes.string.isRequired,
-                                              type: PropTypes.string.isRequired,
-                                              proteins: PropTypes.number.isRequired,
-                                              fat: PropTypes.number.isRequired,
-                                              carbohydrates: PropTypes.number.isRequired,
-                                              calories: PropTypes.number.isRequired,
-                                              price: PropTypes.number.isRequired,
-                                              name: PropTypes.string.isRequired,
-                                              image: PropTypes.string.isRequired,
-                                              image_large: PropTypes.string.isRequired,
-                                            });
-
-IngredientDetails.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropTypes.isRequired),
-}

@@ -1,7 +1,12 @@
+.wrapper {
+  height: 100%;
+}
+
 .constructor {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: 100%;
 }
 
 .meals {
@@ -18,12 +23,6 @@
 }
 
 .amount {
-  display: flex;
-  align-items: center;
-}
-
-.meal {
-  cursor: pointer;
   display: flex;
   align-items: center;
 }

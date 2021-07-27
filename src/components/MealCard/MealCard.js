@@ -2,20 +2,29 @@ import React from "react";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./MealCard.module.css";
 import PropTypes from "prop-types";
+import { useDrag } from "react-dnd";
+import { useSelector } from "react-redux";
+import { ingredientPropTypes } from '../../utils/ingredientPropTypes'
 
-export function MealCard({ data, onClick}) {
-
-  console.log(data)
-
+export function MealCard({ data, onClick }) {
   const handleCardClick = () => {
-    console.log('cliccc')
     onClick(data);
   }
 
+  const { selectedIngredients } = useSelector(({ burgerConstructor }) => burgerConstructor)
+  const quantity = selectedIngredients.filter(i => i?.id === data._id).length
+
+  const [, ref] = useDrag({
+                            type: 'items',
+                            item: {
+                              id: data._id,
+                              type: data.type
+                            },
+                          });
   return (
-    <article className={styles.container} onClick={handleCardClick}>
+    <article ref={ref} className={styles.container} onClick={handleCardClick}>
       <div className={`${styles.img_wrap} pl-4 pr-4`}>
-        {data.quantity && (<div className={`${styles.quantity} text text_type_digits-default`}>{data.quantity}</div>)}
+        {quantity > 0 && (<div className={`${styles.quantity} text text_type_digits-default`}>{quantity}</div>)}
         <img src={data.image} alt={data.name} className={styles.image}/>
       </div>
       <div className={`${styles.currency} mt-1`}>
@@ -30,17 +39,6 @@ export function MealCard({ data, onClick}) {
 export default MealCard;
 
 MealCard.propTypes = {
-  data: PropTypes.shape({
-                          _id: PropTypes.string.isRequired,
-                          type: PropTypes.string.isRequired,
-                          proteins: PropTypes.number.isRequired,
-                          fat: PropTypes.number.isRequired,
-                          carbohydrates: PropTypes.number.isRequired,
-                          calories: PropTypes.number.isRequired,
-                          price: PropTypes.number.isRequired,
-                          name: PropTypes.string.isRequired,
-                          image: PropTypes.string.isRequired,
-                          image_large: PropTypes.string.isRequired,
-                        }).isRequired,
+  data: PropTypes.shape(ingredientPropTypes).isRequired,
   onClick: PropTypes.func.isRequired
 }
