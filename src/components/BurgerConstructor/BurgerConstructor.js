@@ -8,10 +8,18 @@ import { useDrop } from "react-dnd";
 import { ADD_SELECTED_INGREDIENT, REMOVE_SELECTED_INGREDIENT } from "../../services/actions/burgerConstructor";
 import DraggableCard from "../DraggableCard/DraggableCard";
 import { nanoid } from "nanoid";
+import api from "../../utils/api";
+import { ORDER_DETAILS_SET_STATUS, ORDER_DETAILS_SET_VALUE } from "../../services/actions/orderDetailsModal";
+import { useAuth } from "../../utils/auth";
+import { useHistory } from "react-router-dom";
 
-export function BurgerConstructor({ onOrderButtonClick }) {
+export function BurgerConstructor() {
 
+  const { userData } = useAuth();
+  console.log(userData)
   const dispatch = useDispatch();
+  const history = useHistory();
+  const { location } = history;
 
   const onDrop = (itemData) => {
     if (itemData.type === 'bun') {
@@ -36,9 +44,22 @@ export function BurgerConstructor({ onOrderButtonClick }) {
   const { selectedIngredients } = useSelector(({ burgerConstructor }) => burgerConstructor);
 
   const handleButtonClick = () => {
-    console.log('selectedIngredients', selectedIngredients)
-    const ingredientIds = selectedIngredients.map((i) => i?.id);
-    onOrderButtonClick({ ingredientIds });
+
+    if (!userData) {
+      history.push({
+                     pathname: '/login',
+                     state: { from: location }
+                   });
+      return
+    } else {
+      const ingredientIds = selectedIngredients.map((i) => i?.id);
+      api.sendOrder(ingredientIds)
+         .then(res => {
+           dispatch({ type: ORDER_DETAILS_SET_VALUE, payload: { orderId: res.order.number } })
+           dispatch({ type: ORDER_DETAILS_SET_STATUS, payload: { isModalOpen: true } })
+         })
+         .catch(res => console.log(`Возникла ошибка: ${res}`));
+    }
   }
 
 
@@ -103,7 +124,3 @@ export function BurgerConstructor({ onOrderButtonClick }) {
 }
 
 export default BurgerConstructor;
-
-BurgerConstructor.propTypes = {
-  onOrderButtonClick: PropTypes.func.isRequired
-}

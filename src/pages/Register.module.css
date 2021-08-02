@@ -1,0 +1,32 @@
+.container {
+  margin: 180px auto 0;
+}
+
+.container > p {
+  text-align: center;
+}
+
+.title {
+
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 485px;
+  justify-items: center;
+  row-gap: 24px;
+}
+
+.form > div {
+  width: 100% !important;
+}
+
+.form > div > div {
+  width: 100% !important;
+}
+
+.link {
+  text-decoration: none;
+  color: #4C4CFF;
+  font-weight: bold;
+}

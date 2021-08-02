@@ -11,3 +11,18 @@
   max-width: 1240px;
   margin: auto;
 }
+
+.link {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  color: #8585AD;
+}
+
+.link_active {
+  color: #F2F2F3;
+}
+
+.link_active > svg {
+  fill: #F2F2F3 !important;
+}

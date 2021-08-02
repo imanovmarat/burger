@@ -5,16 +5,26 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import MealCard from "../MealCard/MealCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getIngredients } from "../../services/actions";
+import {
+  INGREDIENT_DETAILS_SET_STATUS,
+  INGREDIENT_DETAILS_SET_VALUE
+} from "../../services/actions/ingredientDetailsModal";
 
-function BurgerIngredients({ onClick }) {
-
+function BurgerIngredients() {
   const dispatch = useDispatch();
   const { ingredients } = useSelector(({ ingredients }) => ingredients)
 
+  const handleOpenModal = (ing) => {
+    dispatch({
+               type: INGREDIENT_DETAILS_SET_VALUE,
+               payload: ing
+             });
 
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch])
+    dispatch({
+               type: INGREDIENT_DETAILS_SET_STATUS,
+               payload: { isModalOpen: true }
+             });
+  }
 
   const categories = ingredients?.reduce((prev, meal) => {
     if (prev.includes(meal.type)) return prev;
@@ -82,7 +92,7 @@ function BurgerIngredients({ onClick }) {
             </h2>
             <div className={`${styles.cards} pt-6 pr-1 pb-10 pl-4`}>
               {ingredients.map(meal => category === meal.type && (
-                <MealCard key={meal._id} data={meal} onClick={onClick}/>))}
+                <MealCard key={meal._id} data={meal} onClick={handleOpenModal}/>))}
             </div>
           </React.Fragment>
         ))}
@@ -92,7 +102,3 @@ function BurgerIngredients({ onClick }) {
 }
 
 export default BurgerIngredients;
-
-BurgerIngredients.propTypes = {
-  onClick: PropTypes.func.isRequired
-}

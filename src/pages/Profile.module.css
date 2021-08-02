@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+
+.form {
+  display: grid;
+  grid-template-columns: 480px;
+  align-content: center;
+  row-gap: 24px;
+}
+
+.form > div {
+  width: 100% !important;
+}
+
+.form > div > div {
+  width: 100% !important;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  line-height: 64px;
+}
+
+.list_item {
+
+}
+
+.link {
+  text-decoration: none;
+  color: #8585AD;
+}
+
+.link_active {
+  color: #F2F2F3;
+}
+
+.text {
+  max-width: 320px;
+}
+
+.buttonsWrap {
+  text-align: right;
+}

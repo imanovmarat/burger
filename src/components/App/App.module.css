@@ -1,16 +1,18 @@
 .page {
-  background-color:#131316;
-  height: 100vh;
+  background-color: #131316;
+  height: 100%; /*//TODO почему-то тут было 100vs*/
   grid-template-rows: auto 1fr;
 }
 
 .container {
+  height: inherit;
   display: grid;
   max-width: 1240px;
   margin: auto;
 }
 
 .content {
+  height: inherit;
   display: flex;
   flex-wrap: wrap;
 }
