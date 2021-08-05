@@ -1,29 +1,26 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "./BurgerIngredients.module.css";
-import PropTypes from 'prop-types';
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import MealCard from "../MealCard/MealCard";
-import { useDispatch, useSelector } from "react-redux";
-import { getIngredients } from "../../services/actions";
-import {
-  INGREDIENT_DETAILS_SET_STATUS,
-  INGREDIENT_DETAILS_SET_VALUE
-} from "../../services/actions/ingredientDetailsModal";
+import { useSelector } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
 
 function BurgerIngredients() {
-  const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
   const { ingredients } = useSelector(({ ingredients }) => ingredients)
 
   const handleOpenModal = (ing) => {
-    dispatch({
-               type: INGREDIENT_DETAILS_SET_VALUE,
-               payload: ing
-             });
-
-    dispatch({
-               type: INGREDIENT_DETAILS_SET_STATUS,
-               payload: { isModalOpen: true }
-             });
+    history.push({ pathname: `/ingredients/${ing._id}`, state: { background: location } })
+    /*    dispatch({
+                   type: INGREDIENT_DETAILS_SET_VALUE,
+                   payload: ing
+                 });*/
+    /*
+        dispatch({
+                   type: INGREDIENT_DETAILS_SET_STATUS,
+                   payload: { isModalOpen: true }
+                 });*/
   }
 
   const categories = ingredients?.reduce((prev, meal) => {

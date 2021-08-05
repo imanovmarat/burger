@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import styles from './IngredientDetails.module.css';
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 function IngredientDetails() {
   const params = useParams();
+  const location = useLocation();
+  const background = location.state && location.state.background;
   let { selectedIngredient } = useSelector(({ ingredientDetails }) => ingredientDetails);
-  const { ingredients } = useSelector(({ ingredients }) => ingredients)
+  const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(({ ingredients }) => ingredients)
 
   const [ingredient, setIngredient] = useState();
-  const [fullPage, setFullPage] = useState(false);
 
   useEffect(() => {
     if (!selectedIngredient && params.id) {
       setIngredient(ingredients.find(i => {return i._id === params.id}))
-      setFullPage(true)
     } else {
       setIngredient(selectedIngredient)
     }
@@ -22,11 +22,11 @@ function IngredientDetails() {
   }, [ingredients, params, selectedIngredient])
 
 
-  if (!ingredient) return null
+  if (!ingredient || ingredient?.length > 0 || ingredientsRequest || ingredientsFailed) return null
 
   return (
     <div className={styles.container}>
-      {fullPage && (<h1 className="text text_type_main-medium mt-30">Детали ингредиента</h1>)}
+      {!background && (<h1 className="text text_type_main-medium mt-30">Детали ингредиента</h1>)}
       <figure className={styles.imgWrapper}>
         <img src={ingredient.image_large} alt={ingredient.name}/>
         <figcaption className="text text_type_main-default mt-4 mb-8"><b>{ingredient.name}</b></figcaption>

@@ -1,23 +1,17 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import styles from './Login.module.css';
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, Redirect, useHistory } from "react-router-dom";
 import { useAuth } from "../utils/auth";
+import { useSelector } from "react-redux";
 
 
 function Login() {
-  let { signIn, getUser, ...auth } = useAuth();
+  let { signIn } = useAuth();
   const history = useHistory();
   const { state } = history.location;
-
-  const init = async () => await getUser();
-
-  useEffect(() => {
-    if (!auth.userData) {
-      init();
-    }
-  }, []);
+  const { isAuthorized } = useSelector(({ profile }) => profile);
 
 
   const [email, setEmail] = useState('');
@@ -40,9 +34,9 @@ function Login() {
   function onIconClick() {
     setShowPassword(prev => !prev)
   }
-  
 
-  if (auth.userData) {
+
+  if (isAuthorized) {
     return (
       <Redirect
         to={state?.from || '/'}

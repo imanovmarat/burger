@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import styles from './Register.module.css';
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, Redirect, useHistory } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { register } from "../services/actions/profile";
 import { useDispatch } from "react-redux";
 import { useAuth } from "../utils/auth";
@@ -17,13 +17,13 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
 
-  const init = async () => await getUser();
+  const init = useCallback(async () => await getUser(), [getUser]);
 
   useEffect(() => {
     if (!auth.userData) {
       init().then();
     }
-  }, []);
+  }, [auth.userData, init]);
 
 
   function handleChangeName(e) {

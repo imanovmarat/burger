@@ -4,6 +4,7 @@ import { setCookie } from "../../utils/helpers";
 export const SEND_REQUEST = 'SEND_REQUEST';
 export const REQUEST_SUCCESS = 'REQUEST_SUCCESS';
 export const REQUEST_FAILED = 'REQUEST_FAILED';
+export const SET_USER_AUTHORIZATION_STATUS = 'SET_USER_AUTHORIZATION_STATUS';
 
 
 export function register({ email, password, name }) {
@@ -44,6 +45,10 @@ export function login({ email, password }) {
           dispatch({
                      type: REQUEST_SUCCESS,
                      payload: res.user
+                   });
+          dispatch({
+                     type: SET_USER_AUTHORIZATION_STATUS,
+                     payload: true
                    });
           const { accessToken, refreshToken } = res;
           setCookie('token', accessToken);

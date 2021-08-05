@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 
 import styles from './ForgotPassword.module.css';
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import api from "../utils/api";
 
-function ForgotPassword() {
+function ResetPassword() {
 
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
+  const history = useHistory();
 
-  const [showPassword, setShowPassword] = useState(false);
+  const
+    [showPassword, setShowPassword] = useState(false);
 
   function handleChangePassword(e) {
     setPassword(e.target.value);
@@ -29,8 +31,12 @@ function ForgotPassword() {
     api.resetPassword({ password, token: code })
        .then(res => {
          console.log(res);
+         history.replace({ pathname: '/login', state: null })
        })
-       .catch(err => console.log(`Возникла ошибка: ${err}`));
+       .catch(err => {
+         console.log(`Возникла ошибка: ${err}`);
+         history.replace({ pathname: '/login', state: null })
+       });
   }
 
   return (
@@ -52,4 +58,4 @@ function ForgotPassword() {
   );
 }
 
-export default ForgotPassword;
+export default ResetPassword;

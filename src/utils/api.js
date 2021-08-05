@@ -2,6 +2,10 @@ import { getCookie, setCookie } from "./helpers";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 
+const checkResponse = (res) => {
+  return res.ok ? res.json() : res.json().then(err => Promise.reject(err))
+}
+
 class Api {
   constructor({ baseUrl, headers }) {
     this._baseUrl = baseUrl;
@@ -12,12 +16,7 @@ class Api {
     return fetch(`${this._baseUrl}/ingredients`, {
       headers: { ...this._headers }
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject('Ошибка запроса getIngredients');
-      });
+      .then(checkResponse);
 
   }
 
@@ -29,12 +28,7 @@ class Api {
                              ingredients
                            })
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject('Ошибка запроса sendOrder');
-      });
+      .then(checkResponse);
   }
 
   checkEmail({ email }) {
@@ -45,12 +39,7 @@ class Api {
                              email
                            })
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject('Ошибка запроса checkEmail');
-      });
+      .then(checkResponse);
   }
 
   resetPassword({ password, token }) {
@@ -62,12 +51,7 @@ class Api {
                              token
                            })
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject('Ошибка запроса resetPassword');
-      });
+      .then(checkResponse);
   }
 }
 
@@ -89,33 +73,29 @@ export const registerRequest = ({ email, password, name }) => {
     },
     body: JSON.stringify({ email, password, name })
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject('Ошибка запроса на регистрацию ');
-    })
-    .then((res) => res);
+    .then(checkResponse);
 }
 
 export const loginRequest = ({ email, password }) => {
-  return fetchWithRefresh(`${BASE_URL}/auth/login`, {
+  return fetch(`${BASE_URL}/auth/login`, {
     method: 'POST',
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({ email, password })
   })
+    .then(checkResponse);
 }
 
 export const logoutRequest = () => {
-  return fetchWithRefresh(`${BASE_URL}/auth/logout`, {
+  return fetch(`${BASE_URL}/auth/logout`, {
     method: 'POST',
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({ token: localStorage.getItem('token') })
   })
+    .then(checkResponse);
 }
 
 export const getUserRequest = () => {
@@ -141,10 +121,6 @@ export const changeUserDataRequest = ({ email, name, password }) => {
                            password
                          })
   })
-}
-
-const checkResponse = (res) => {
-  return res.ok ? res.json() : res.json().then(err => Promise.reject(err))
 }
 
 export const refreshTokenRequest = () => {

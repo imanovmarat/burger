@@ -1,7 +1,7 @@
-import React, { useReducer, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Profile.module.css';
 import { Button as YaButton, Input } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { NavLink, Redirect } from "react-router-dom";
 import { useAuth } from "../utils/auth";
 import Button from "../components/Button/Button";
@@ -9,8 +9,12 @@ import { changeUserDataRequest } from "../utils/api";
 import { REQUEST_SUCCESS } from "../services/actions/profile";
 
 function Profile() {
-  let { signOut, userData, ...auth } = useAuth();
+  let { signOut, userData, getUser } = useAuth();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    getUser();
+  }, [getUser])
 
   const [name, setName] = useState(userData.name);
   const [email, setEmail] = useState(userData.email);

@@ -4,10 +4,11 @@ import checkMarkIconPath from '../../images/CheckMark.svg'
 import { useSelector } from "react-redux";
 
 function OrderDetails() {
-  const { orderId } = useSelector(({ orderDetails }) => orderDetails)
+  const { orderData } = useSelector(({ order }) => order)
+  if (!orderData) return null;
   return (
     <div className={styles.container}>
-      <p className={`${styles.title} text text_type_digits-large mt-20 mb-8`}>{orderId}</p>
+      <p className={`${styles.title} text text_type_digits-large mt-20 mb-8`}>{orderData.order.number}</p>
       <p className="text text_type_main-medium mb-15">идентификатор заказа</p>
       <div className="mb-15">
         <img src={checkMarkIconPath} alt="Иконка галочкой"/>

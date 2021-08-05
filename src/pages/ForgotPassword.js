@@ -1,13 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import styles from './ForgotPassword.module.css';
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import api from "../utils/api";
+import { useDispatch, useSelector } from "react-redux";
+import { SET_USER_AUTHORIZATION_STATUS } from "../services/actions/profile";
 
 function ForgotPassword() {
 
   const [email, setEmail] = useState('');
+  const { isAuthorized } = useSelector(({ profile }) => profile);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  console.log(history);
+
+  useEffect(() => {
+    if (window.localStorage.getItem('token')) {
+      dispatch({ type: SET_USER_AUTHORIZATION_STATUS, payload: true })
+    }
+  }, [dispatch])
 
   function handleChangeEmail(e) {
     setEmail(e.target.value);
@@ -16,10 +28,17 @@ function ForgotPassword() {
   function handleSubmit(e) {
     e.preventDefault();
     api.checkEmail({ email })
-       .then(res => {
-         console.log(res);
+       .then(_ => {
+         history.push({
+                        pathname: '/reset-password',
+                        state: { from: history.location.pathname }
+                      })
        })
        .catch(err => console.log(`Возникла ошибка: ${err}`));
+  }
+
+  if (isAuthorized) {
+    history.replace({ pathname: '/' });
   }
 
   return (

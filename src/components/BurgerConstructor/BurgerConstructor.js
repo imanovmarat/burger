@@ -1,22 +1,18 @@
 import React from "react";
 import { Button, ConstructorElement, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./BurgerConstructor.module.css";
-import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useDrop } from "react-dnd";
 import { ADD_SELECTED_INGREDIENT, REMOVE_SELECTED_INGREDIENT } from "../../services/actions/burgerConstructor";
 import DraggableCard from "../DraggableCard/DraggableCard";
 import { nanoid } from "nanoid";
-import api from "../../utils/api";
-import { ORDER_DETAILS_SET_STATUS, ORDER_DETAILS_SET_VALUE } from "../../services/actions/orderDetailsModal";
-import { useAuth } from "../../utils/auth";
 import { useHistory } from "react-router-dom";
+import { sendOrder } from "../../services/actions/order";
 
 export function BurgerConstructor() {
 
-  const { userData } = useAuth();
-  console.log(userData)
+  const { isAuthorized } = useSelector(({ profile }) => profile);
   const dispatch = useDispatch();
   const history = useHistory();
   const { location } = history;
@@ -45,20 +41,25 @@ export function BurgerConstructor() {
 
   const handleButtonClick = () => {
 
-    if (!userData) {
+    if (!isAuthorized) {
       history.push({
                      pathname: '/login',
                      state: { from: location }
                    });
-      return
     } else {
-      const ingredientIds = selectedIngredients.map((i) => i?.id);
-      api.sendOrder(ingredientIds)
-         .then(res => {
-           dispatch({ type: ORDER_DETAILS_SET_VALUE, payload: { orderId: res.order.number } })
-           dispatch({ type: ORDER_DETAILS_SET_STATUS, payload: { isModalOpen: true } })
-         })
-         .catch(res => console.log(`Возникла ошибка: ${res}`));
+      let isBunInOrder = false;
+      const ingredientIds = selectedIngredients.map((i) => {
+        if (i.type === 'bun') {
+          isBunInOrder = true;
+        }
+        return i?.id
+      });
+      if (!isBunInOrder) return;
+      dispatch(sendOrder(ingredientIds));
+      history.push({
+                     pathname: '/order',
+                     state: { background: location }
+                   });
     }
   }
 
