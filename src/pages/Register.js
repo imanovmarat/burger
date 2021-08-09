@@ -3,27 +3,23 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styles from './Register.module.css';
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, Redirect } from "react-router-dom";
-import { register } from "../services/actions/profile";
-import { useDispatch } from "react-redux";
-import { useAuth } from "../utils/auth";
+import { getUser, register } from "../services/actions/profile";
+import { useDispatch, useSelector } from "react-redux";
 
-function Login() {
-  let { signIn, getUser, ...auth } = useAuth();
+function Register() {
   const dispatch = useDispatch();
 
+  const { isAuthorized } = useSelector(({ profile }) => profile);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-
-  const init = useCallback(async () => await getUser(), [getUser]);
-
   useEffect(() => {
-    if (!auth.userData) {
-      init().then();
+    if (!isAuthorized) {
+      dispatch(getUser());
     }
-  }, [auth.userData, init]);
+  }, [isAuthorized, dispatch, getUser]);
 
 
   function handleChangeName(e) {
@@ -47,7 +43,7 @@ function Login() {
     setShowPassword(prev => !prev)
   }
 
-  if (auth.userData) {
+  if (isAuthorized) {
     return (
       <Redirect
         to={'/'}
@@ -74,4 +70,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;

@@ -5,6 +5,7 @@ import { orderDetails } from "./orderDetailsModal";
 import { burgerConstructor } from "./burgerConstructor";
 import { profile } from "./profile";
 import { order } from "./order";
+import { userFormReducer } from "./userDataForm";
 
 const initialState = {
   ingredients: [],
@@ -56,5 +57,6 @@ export const rootReducer = combineReducers({
                                              orderDetails,
                                              burgerConstructor,
                                              profile,
-                                             order
+                                             order,
+                                             userFormReducer
                                            })

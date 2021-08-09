@@ -8,7 +8,7 @@ import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
 
 // @ts-ignore
-import {Route, Switch, useLocation} from "react-router-dom";
+import {Route, Switch, useHistory, useLocation} from "react-router-dom";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {useDispatch} from "react-redux";
@@ -24,35 +24,14 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 
 function App() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const location = useLocation();
-  const background = location.state && location.state.background;
+  const background = history?.action === 'PUSH' && location.state && location.state.background;
 
 
   useEffect(() => {
     dispatch(getIngredients());
   }, [dispatch])
-
-
-  /*  const {isModalOpen: isIngredientDetailsModalOpen} = useSelector(store => (store as any).ingredientDetails);
-    const {isModalOpen: isOrderDetailsModalOpen} = useSelector(store => (store as any).orderDetails);*/
-  /*
-
-    const handleCloseModal = () => {
-      dispatch({
-        type: INGREDIENT_DETAILS_SET_STATUS,
-        payload: {isModalOpen: false}
-      })
-      dispatch({
-        type: INGREDIENT_DETAILS_SET_VALUE,
-        payload: {}
-      })
-      dispatch({
-        type: ORDER_DETAILS_SET_STATUS,
-        payload: {isModalOpen: false}
-      })
-    }
-  */
-
 
   return (
     <div className={styles.page}>
@@ -112,21 +91,6 @@ function App() {
       </Modal>
 
       }
-
-      {/*      <Modal onClose={handleCloseModal} isOpen={isIngredientDetailsModalOpen}>
-        <IngredientDetails/>
-      </Modal>*/}
-      {/*{background &&
-      <Route path="/ingredients/:id">
-        <div style={{'fontSize': '140px'}}>ЗИНА!!!!</div>
-        <Modal onClose={handleCloseModal} isOpen={true}>
-          <OrderDetails/>
-        </Modal>
-      </Route>}*/}
-
-      {/*        <Modal onClose={handleCloseModal} isOpen={isOrderDetailsModalOpen}>
-          <OrderDetails/>
-        </Modal>*/}
 
     </div>
   );

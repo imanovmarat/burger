@@ -1,62 +1,59 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styles from './Profile.module.css';
 import { Button as YaButton, Input } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch } from "react-redux";
-import { NavLink, Redirect } from "react-router-dom";
-import { useAuth } from "../utils/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 import Button from "../components/Button/Button";
-import { changeUserDataRequest } from "../utils/api";
-import { REQUEST_SUCCESS } from "../services/actions/profile";
+import { getUser, logout } from "../services/actions/profile";
+import { setUserForm, userForm } from "../services/actions/userDataForm";
 
 function Profile() {
-  let { signOut, userData, getUser } = useAuth();
   const dispatch = useDispatch();
+  const { userData } = useSelector(({ profile }) => profile);
+  const { form } = useSelector(({ userFormReducer }) => userFormReducer);
 
-  useEffect(() => {
-    getUser();
+  useEffect
+  (() => {
+    dispatch(getUser());
   }, [getUser])
 
-  const [name, setName] = useState(userData.name);
-  const [email, setEmail] = useState(userData.email);
-  const [password, setPassword] = useState('');
+  useEffect
+  (() => {
+     if (userData) {
+       setInitialDataToForm();
+     }
+   }
+    ,
+   [userData]
+  )
 
-  function handleChangeName(e) {
-    setName(e.target.value)
+  function setInitialDataToForm() {
+    const keys = Object.keys(userData);
+    keys.forEach(key => dispatch(setUserForm(key, userData[key])))
+    dispatch(setUserForm('password', ''))
   }
 
-  function handleChangeEmail(e) {
-    setEmail(e.target.value)
-  }
-
-  function handleChangePassword(e) {
-    setPassword(e.target.value)
+  function handleChange(e) {
+    dispatch(setUserForm(e.target.name, e.target.value))
   }
 
   function handleExit() {
-    signOut();
+    dispatch(logout());
   }
 
   function cancelChanges(e) {
     e.preventDefault();
-    setName(userData.name);
-    setEmail(userData.email);
-    setPassword('');
+    setInitialDataToForm();
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    changeUserDataRequest({ email, name, password })
-      .then(res => dispatch({ type: REQUEST_SUCCESS, payload: res }))
+    dispatch(userForm({ email: form.email, name: form.name, password: form.password }));
   }
 
-
-  if (!userData) {
+  if (!form) {
     return (
-      <Redirect
-        to={{
-          pathname: '/'
-        }}
-      />
+      <p>Loading</p>
     );
   }
 
@@ -83,16 +80,18 @@ function Profile() {
       </div>
 
       <form id="profile" className={`${styles.form} ml-15`}>
-        <Input size={"default"} type="text" placeholder={'Имя'}
-               value={name}
-               onChange={handleChangeName}
+        <Input size={"default"} type="text" placeholder={'Имя'} name='name'
+               value={form.name}
+               onChange={handleChange}
                icon={'EditIcon'}/>
         <Input size={"default"} type="email" placeholder={'Электропочта'}
-               value={email}
-               onChange={handleChangeEmail}
+               name='email'
+               value={form.email}
+               onChange={handleChange}
                icon={'EditIcon'}/>
-        <Input type={'password'} id='password' placeholder={'Пароль'} value={password}
-               onChange={handleChangePassword}
+        <Input type={'password'} id='password' placeholder={'Пароль'} value={form.password}
+               name='password'
+               onChange={handleChange}
                icon={'EditIcon'}/>
         <div className={`${styles.buttonsWrap}`}>
           <YaButton type={'secondary'} size={"medium"} onClick={cancelChanges}>Отмена</YaButton>
