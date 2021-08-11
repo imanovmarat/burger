@@ -14,6 +14,7 @@ function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const hasToken = localStorage.getItem('token');
 
   useEffect(() => {
     if (!isAuthorized) {
@@ -43,7 +44,7 @@ function Register() {
     setShowPassword(prev => !prev)
   }
 
-  if (isAuthorized) {
+  if (hasToken || isAuthorized) {
     return (
       <Redirect
         to={'/'}

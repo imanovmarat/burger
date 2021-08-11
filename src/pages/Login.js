@@ -3,15 +3,17 @@ import React, { useCallback, useState } from 'react';
 import styles from './Login.module.css';
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, Redirect, useHistory } from "react-router-dom";
-import { useAuth } from "../utils/auth";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../services/actions/profile";
 
 
 function Login() {
-  let { signIn } = useAuth();
+  const dispatch = useDispatch();
   const history = useHistory();
   const { state } = history.location;
   const { isAuthorized } = useSelector(({ profile }) => profile);
+
+  const hasToken = localStorage.getItem('token');
 
 
   const [email, setEmail] = useState('');
@@ -28,15 +30,15 @@ function Login() {
 
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
-    signIn({ email, password });
-  }, [signIn, email, password])
+    dispatch(login({ email, password }));
+  }, [dispatch, email, password])
 
   function onIconClick() {
     setShowPassword(prev => !prev)
   }
 
-
-  if (isAuthorized) {
+  console.log('hasToken', hasToken)
+  if (hasToken || isAuthorized) {
     return (
       <Redirect
         to={state?.from || '/'}

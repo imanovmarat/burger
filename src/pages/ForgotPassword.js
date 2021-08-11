@@ -13,7 +13,7 @@ function ForgotPassword() {
   const { isAuthorized } = useSelector(({ profile }) => profile);
   const dispatch = useDispatch();
   const history = useHistory();
-  console.log(history);
+  const hasToken = localStorage.getItem('token');
 
   useEffect(() => {
     if (window.localStorage.getItem('token')) {
@@ -37,7 +37,7 @@ function ForgotPassword() {
        .catch(err => console.log(`Возникла ошибка: ${err}`));
   }
 
-  if (isAuthorized) {
+  if (hasToken || isAuthorized) {
     history.replace({ pathname: '/' });
   }
 

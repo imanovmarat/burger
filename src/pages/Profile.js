@@ -2,15 +2,17 @@ import React, { useEffect } from 'react';
 import styles from './Profile.module.css';
 import { Button as YaButton, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import Button from "../components/Button/Button";
 import { getUser, logout } from "../services/actions/profile";
 import { setUserForm, userForm } from "../services/actions/userDataForm";
 
 function Profile() {
   const dispatch = useDispatch();
+
   const { userData } = useSelector(({ profile }) => profile);
   const { form } = useSelector(({ userFormReducer }) => userFormReducer);
+  const history = useHistory();
 
   useEffect
   (() => {
@@ -39,6 +41,7 @@ function Profile() {
 
   function handleExit() {
     dispatch(logout());
+    history.push('/');
   }
 
   function cancelChanges(e) {
@@ -51,12 +54,11 @@ function Profile() {
     dispatch(userForm({ email: form.email, name: form.name, password: form.password }));
   }
 
-  if (!form) {
+  if (!userData) {
     return (
       <p>Loading</p>
     );
   }
-
 
   return (
     <section className={`${styles.container} mt-30`}>
@@ -75,7 +77,8 @@ function Profile() {
             </Button>
           </li>
         </ul>
-        <p className={`${styles.text} text text_type_main-default text_color_inactive mt-20`}>В этом разделе вы можете
+        <p className={`${styles.text} text text_type_main-default text_color_inactive mt-20`}>В этом разделе вы
+          можете
           изменить свои персональные данные</p>
       </div>
 

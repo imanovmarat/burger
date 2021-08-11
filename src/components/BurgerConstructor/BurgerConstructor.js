@@ -11,11 +11,11 @@ import { useHistory } from "react-router-dom";
 import { sendOrder } from "../../services/actions/order";
 
 export function BurgerConstructor() {
-
-  const { isAuthorized } = useSelector(({ profile }) => profile);
+  
   const dispatch = useDispatch();
   const history = useHistory();
   const { location } = history;
+  const hasToken = localStorage.getItem('token');
 
   const onDrop = (itemData) => {
     if (itemData.type === 'bun') {
@@ -41,7 +41,7 @@ export function BurgerConstructor() {
 
   const handleButtonClick = () => {
 
-    if (!isAuthorized) {
+    if (!hasToken) {
       history.push({
                      pathname: '/login',
                      state: { from: location }
