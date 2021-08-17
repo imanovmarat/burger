@@ -3,6 +3,9 @@ import { GET_INGREDIENTS_FAILED, GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_SUCCES
 import { ingredientDetails } from "./ingredientDetailsModal";
 import { orderDetails } from "./orderDetailsModal";
 import { burgerConstructor } from "./burgerConstructor";
+import { profile } from "./profile";
+import { order } from "./order";
+import { userFormReducer } from "./userDataForm";
 
 const initialState = {
   ingredients: [],
@@ -48,4 +51,12 @@ export const ingredients = (state = initialState, action) => {
 }
 
 
-export const rootReducer = combineReducers({ ingredients, ingredientDetails, orderDetails, burgerConstructor })
+export const rootReducer = combineReducers({
+                                             ingredients,
+                                             ingredientDetails,
+                                             orderDetails,
+                                             burgerConstructor,
+                                             profile,
+                                             order,
+                                             userFormReducer
+                                           })

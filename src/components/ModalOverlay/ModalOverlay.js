@@ -2,7 +2,7 @@ import React from "react";
 import styles from './ModalOverlay.module.css';
 import PropTypes from "prop-types";
 
-export function ModalOverlay ({isOpen, onClose, children}) {
+export function ModalOverlay({ onClose, children }) {
 
   function handleOutsideClickClose(evt) {
     if (evt.target === evt.currentTarget) {
@@ -11,14 +11,13 @@ export function ModalOverlay ({isOpen, onClose, children}) {
   }
 
   return (
-    <section className={styles.popup + ' ' + (isOpen && styles.popup_opened)} onClick={handleOutsideClickClose}>
+    <section className={styles.popup + ' ' + styles.popup_opened} onClick={handleOutsideClickClose}>
       {children}
     </section>
   );
 }
 
 ModalOverlay.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   children: PropTypes.element.isRequired,
 }

@@ -7,7 +7,8 @@ import {Provider} from "react-redux";
 import {applyMiddleware, compose, createStore} from "redux";
 import {rootReducer} from "./services/reducers";
 import thunk from "redux-thunk";
-
+// @ts-ignore
+import {BrowserRouter as Router} from "react-router-dom";
 
 const composeEnhancers =
   typeof window === 'object' && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -16,17 +17,19 @@ const composeEnhancers =
 
 const enhancer = composeEnhancers(applyMiddleware(thunk));
 
-
 const store = createStore(rootReducer, enhancer);
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <Router>
+        <App/>
+      </Router>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
-);
+)
+;
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

@@ -2,14 +2,14 @@ import React from 'react';
 import styles from './Button.module.css';
 import PropTypes from 'prop-types';
 
-function Button({ children, onClick }) {
+function Button({ children, onClick, className }) {
 
   const handleClick = (e) => {
-   onClick(e);
+    onClick(e);
   }
 
   return (
-    <button className={styles.button} onClick={handleClick}>
+    <button className={styles.button + ' ' + className} onClick={handleClick}>
       {children}
     </button>
   );
@@ -18,6 +18,6 @@ function Button({ children, onClick }) {
 export default Button;
 
 Button.propTypes = {
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   onClick: PropTypes.func.isRequired
 }
