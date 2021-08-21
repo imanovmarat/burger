@@ -1,0 +1,30 @@
+.section {
+  composes: section from '../App/App.module.css'
+}
+
+.orders_board {
+  display: flex;
+  justify-content: space-between;
+}
+
+.board {
+  flex: 0 0 272px;
+}
+
+.order_list {
+  flex: 0 0 136px;
+}
+
+.orders_wrap {
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+.total {
+  composes: title from '../OrderDetails/OrderDetails.module.css';
+}
+
+.total_today {
+  composes: title from '../OrderDetails/OrderDetails.module.css';
+}

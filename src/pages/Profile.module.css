@@ -48,3 +48,9 @@
 .buttonsWrap {
   text-align: right;
 }
+
+.order_list {
+  max-width: 844px;
+  max-height: 600px;
+  overflow-y: auto;
+}

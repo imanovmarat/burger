@@ -1,0 +1,20 @@
+.container {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.number {
+  text-align: center;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total_price_wrap {
+  display: flex;
+  align-items: center;
+}

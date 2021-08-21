@@ -21,6 +21,8 @@ import {ProtectedRoute} from "../ProtectedRoute";
 import {getIngredients} from "../../services/actions";
 import {ProtectedResetPasswordRoute} from "../ProtectedResetPasswordRoute";
 import OrderDetails from "../OrderDetails/OrderDetails";
+import Feed from "../Feed/Feed";
+import OrderDescription from "../OrderDescription/OrderDescription";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,7 +34,9 @@ function App() {
   useEffect(() => {
     dispatch(getIngredients());
   }, [dispatch])
-
+  /*  console.log('locationAPP', location)
+    console.log('historyAPP', history)
+    console.log('backgroundAPP', background)*/
   return (
     <div className={styles.page}>
       <AppHeader/>
@@ -61,9 +65,11 @@ function App() {
             <ProtectedResetPasswordRoute path='/reset-password'>
               <ResetPassword/>
             </ProtectedResetPasswordRoute>
-            <Route path='/feed'>
-            </Route>
             <Route path='/feed/:id'>
+              <OrderDescription/>
+            </Route>
+            <Route path='/feed'>
+              <Feed/>
             </Route>
             <ProtectedRoute path='/profile'>
               <Profile/>
@@ -79,16 +85,24 @@ function App() {
       </div>
 
       {background &&
-      <Modal>
-        <Switch>
-          <Route path="/ingredients/:id">
+
+      <Switch>
+        <Route path="/ingredients/:id">
+          <Modal>
             <IngredientDetails/>
-          </Route>
-          <Route path="/order">
+          </Modal>
+        </Route>
+        <Route path="/order">
+          <Modal>
             <OrderDetails/>
-          </Route>
-        </Switch>
-      </Modal>
+          </Modal>
+        </Route>
+        <Route path="/feed/:id">
+          <Modal>
+            <OrderDescription/>
+          </Modal>
+        </Route>
+      </Switch>
 
       }
 

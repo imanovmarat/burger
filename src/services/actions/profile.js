@@ -53,14 +53,17 @@ export function login({ email, password }) {
     await loginRequest({ email, password })
       .then(res => {
         if (res && res.success) {
+          console.log('1')
           dispatch({
                      type: LOGIN_REQUEST_SUCCESS,
                      payload: res.user
                    });
+          console.log('2')
           dispatch({
                      type: SET_USER_AUTHORIZATION_STATUS,
                      payload: true
                    });
+          console.log('3')
           const { accessToken, refreshToken } = res;
           setCookie('token', accessToken);
           localStorage.setItem('token', refreshToken);
