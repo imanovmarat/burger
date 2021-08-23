@@ -1,6 +1,7 @@
 import React from "react";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './IngCard.module.css';
+import PropTypes from "prop-types";
 
 export function IngCard({ img, title, price, count }) {
   return <figure className={`${styles.container} text mb-4`}>
@@ -17,4 +18,11 @@ export function IngCard({ img, title, price, count }) {
     </div>
 
   </figure>;
+}
+
+IngCard.propTypes = {
+  img: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  count: PropTypes.number.isRequired
 }

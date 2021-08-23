@@ -4,6 +4,7 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { useSelector } from "react-redux";
 import { renderTime } from "../../utils/time";
 import { useRouteMatch } from "react-router-dom";
+import PropTypes from "prop-types";
 
 export function OrderBrief({ id, date, title, ingredients, onClick }) {
   const { ingredients: ingredientList } = useSelector(({ ingredients }) => ingredients)
@@ -80,4 +81,12 @@ export function OrderBrief({ id, date, title, ingredients, onClick }) {
       </div>
     </div>
   </article>;
+}
+
+OrderBrief.propTypes = {
+  id: PropTypes.number.isRequired,
+  date: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  ingredients: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onClick: PropTypes.func.isRequired
 }

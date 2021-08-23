@@ -11,8 +11,10 @@ import { OrderBrief } from "../components/OrderBrief/OrderBrief";
 import Modal from "../components/Modal/Modal";
 import OrderDescription from "../components/OrderDescription/OrderDescription";
 import { getCookie } from "../utils/helpers";
+import PropTypes from "prop-types";
 
 function Profile({ location }) {
+  console.log('location', location)
   const dispatch = useDispatch();
   const { userData, isAuthorized } = useSelector(({ profile }) => profile);
   const { form } = useSelector(({ userFormReducer }) => userFormReducer);
@@ -152,3 +154,7 @@ function Profile({ location }) {
 }
 
 export default withRouter(Profile);
+
+Profile.propTypes = {
+  location: PropTypes.object.isRequired,
+}

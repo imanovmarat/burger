@@ -1,8 +1,10 @@
 import React from "react";
 import styles from './Stats.module.css';
 import { nanoid } from "nanoid";
+import PropTypes from "prop-types";
 
 export function Stats({ total, totalToday, doneOrders, inProgressOrders }) {
+  console.log('total, totalToday, doneOrders, inProgressOrders', total, totalToday, doneOrders, inProgressOrders)
   const preparedDoneOrders = doneOrders.map((i, index) => {
     if (index >= 10) return
     return <p key={i._id}
@@ -49,4 +51,11 @@ export function Stats({ total, totalToday, doneOrders, inProgressOrders }) {
       <p className={`${styles.total_today} text text_type_digits-large`}>{totalToday}</p>
     </article>
   </section>;
+}
+
+Stats.propTypes = {
+  total: PropTypes.number.isRequired,
+  totalToday: PropTypes.number.isRequired,
+  doneOrders: PropTypes.array.isRequired,
+  inProgressOrders: PropTypes.array.isRequired
 }
