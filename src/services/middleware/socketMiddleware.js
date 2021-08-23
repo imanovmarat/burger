@@ -20,6 +20,7 @@ export const socketMiddleware = (wsUrl) => {
 
       if (type === WS_CONNECTION_START) {
         const { token } = payload;
+        console.log('сокет подключается, payload', payload)
         socket = new WebSocket(`${wsUrl}${token ? '?token=' + token : '/all'}`);
       }
       if (socket) {

@@ -6,7 +6,6 @@ import { NavLink, Route, Switch, useHistory, useLocation, withRouter } from "rea
 import Button from "../components/Button/Button";
 import { getUser, logout } from "../services/actions/profile";
 import { setUserForm, userForm } from "../services/actions/userDataForm";
-// import data from "../utils/testdata.json";
 import { OrderBrief } from "../components/OrderBrief/OrderBrief";
 import Modal from "../components/Modal/Modal";
 import OrderDescription from "../components/OrderDescription/OrderDescription";
@@ -146,7 +145,6 @@ function Profile({ location }) {
           <OrderDescription/>
         </Modal>
       </Route>
-
       }
 
     </section>

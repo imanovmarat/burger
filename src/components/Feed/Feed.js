@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { OrderBrief } from "../OrderBrief/OrderBrief";
-// import data from '../../utils/testdata.json'
 import { useSocket } from "../../utils/use-socket";
 import styles from './Feed.module.css';
 import { Stats } from "../Stats/Stats";
 import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { WS_CONNECTION_CLOSE, WS_CONNECTION_START } from "../../services/actions/wsActionTypes";
 
 function Feed() {
 
@@ -18,9 +18,9 @@ function Feed() {
 
   useEffect(() => {
     console.log('что-то пришло из сокетов')
-    dispatch({ type: 'WS_CONNECTION_START', payload: { token: null } })
+    dispatch({ type: WS_CONNECTION_START, payload: { token: null } })
     return () => dispatch({
-                            type: 'WS_CONNECTION_CLOSE',
+                            type: WS_CONNECTION_CLOSE,
                             payload: { code: 1000 }
                           })
   }, [dispatch])

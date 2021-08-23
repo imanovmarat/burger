@@ -2,26 +2,30 @@ import React, { useEffect } from 'react';
 import styles from './OrderDescription.module.css';
 import { IngCard } from "../IngCard/IngCard";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams, useRouteMatch } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { renderTime } from "../../utils/time";
+import { WS_CONNECTION_CLOSE, WS_CONNECTION_START } from "../../services/actions/wsActionTypes";
 
 
 function OrderDescription() {
   const params = useParams();
   const location = useLocation();
   const history = useHistory();
+  const { path } = useRouteMatch();
   const dispatch = useDispatch();
   const { wsConnected, messages } = useSelector(({ wsReducer }) => wsReducer);
   const { ingredients } = useSelector(({ ingredients }) => ingredients);
 
+  const currentPath = path.split('/')[1]
+
   useEffect(() => {
-    if (!wsConnected) {
-      dispatch({ type: 'WS_CONNECTION_START', payload: { token: null } })
+    if (!wsConnected && currentPath === 'feed') {
+      dispatch({ type: WS_CONNECTION_START, payload: { token: null } })
     }
     return () => dispatch({
-                            type: 'WS_CONNECTION_CLOSE',
+                            type: WS_CONNECTION_CLOSE,
                             payload: { code: 1000 }
                           })
   }, [])
@@ -29,10 +33,9 @@ function OrderDescription() {
   if (ingredients.length === 0 || messages.length === 0) return null;
 
   const background = history?.action === 'PUSH' && location.state && location.state.background;
-  const currentOrder = messages[messages.length - 1].orders.find(i => i.number === parseInt(params.id));
+  const currentOrder = messages[messages.length - 1]?.orders.find(i => i.number === parseInt(params.id));
 
-
-  const currentIngredients = currentOrder.ingredients.reduce((acc, i) => {
+  const currentIngredients = currentOrder?.ingredients.reduce((acc, i) => {
     const hasIngredient = ingredients.find(element => element._id === i);
     if (hasIngredient) {
       const alreadyAdded = acc.find(i => i._id === hasIngredient._id);
@@ -41,11 +44,11 @@ function OrderDescription() {
     return acc
   }, [])
 
-  const renderPrice = currentIngredients.reduce((acc, i) => acc += i.price * i.count, 0)
+  const renderPrice = currentIngredients?.reduce((acc, i) => acc += i.price * i.count, 0)
 
   return (
     <div className={`${styles.container} ${!background ? 'pt-15' : null}`}>
-      <p className={`${styles.number} text text_type_digits-default mb-10`}>{`#${currentOrder.number}`}</p>
+      <p className={`${styles.number} text text_type_digits-default mb-10`}>{`#${currentOrder?.number}`}</p>
       <h3 className={`${styles.title} text text_type_main-medium mb-3`}>{currentOrder.name}</h3>
 
       {
