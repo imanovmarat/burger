@@ -11,7 +11,7 @@ import { useHistory } from "react-router-dom";
 import { sendOrder } from "../../services/actions/order";
 
 export function BurgerConstructor() {
-  
+
   const dispatch = useDispatch();
   const history = useHistory();
   const { location } = history;
@@ -79,8 +79,11 @@ export function BurgerConstructor() {
 
   const totalPrice = selectedIngredients.reduce((acc, item) => {
     const data = ingredients?.find(i => i._id === item?.id);
-    return data?.price ? acc += data.price : acc
 
+    if (data?.type === 'bun') {
+      return acc += data.price * 2;
+    }
+    return data?.price ? acc += data.price : acc
   }, 0)
 
 

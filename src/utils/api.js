@@ -1,4 +1,4 @@
-import { getCookie, setCookie } from "./helpers";
+import { deleteCookie, getCookie, setCookie } from "./helpers";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 
@@ -23,7 +23,10 @@ class Api {
   sendOrder(ingredients) {
     return fetch(`${this._baseUrl}/orders`, {
       method: 'POST',
-      headers: { ...this._headers },
+      headers: {
+        ...this._headers,
+        Authorization: getCookie('token')
+      },
       body: JSON.stringify({
                              ingredients
                            })

@@ -36,8 +36,7 @@ function Login() {
   function onIconClick() {
     setShowPassword(prev => !prev)
   }
-
-  console.log('hasToken', hasToken)
+  
   if (hasToken || isAuthorized) {
     return (
       <Redirect

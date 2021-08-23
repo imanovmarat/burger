@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.img_container {
+  display: flex;
+  align-items: center;
+}
+
+.img_wrap {
+  composes: image_wrap from '../OrderBrief/OrderBrief.module.css';
+  margin: 0;
+}
+
+.img {
+  composes: img from '../OrderBrief/OrderBrief.module.css';
+}
+
+.caption {
+  font-weight: bold;
+}
+
+.price_wrap {
+  display: flex;
+  align-items: center;
+}
+
+.price {
+
+}

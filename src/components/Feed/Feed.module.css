@@ -1,0 +1,7 @@
+.container {
+  composes: section from '../App/App.module.css';
+}
+
+.cards {
+  composes: meals from '../BurgerIngredients/BurgerIngredients.module.css';
+}

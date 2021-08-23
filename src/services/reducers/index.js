@@ -6,6 +6,7 @@ import { burgerConstructor } from "./burgerConstructor";
 import { profile } from "./profile";
 import { order } from "./order";
 import { userFormReducer } from "./userDataForm";
+import { wsReducer } from "./wsReducer";
 
 const initialState = {
   ingredients: [],
@@ -58,5 +59,6 @@ export const rootReducer = combineReducers({
                                              burgerConstructor,
                                              profile,
                                              order,
-                                             userFormReducer
+                                             userFormReducer,
+                                             wsReducer
                                            })

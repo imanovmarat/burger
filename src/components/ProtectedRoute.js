@@ -1,12 +1,13 @@
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, useLocation } from 'react-router-dom';
 import { refreshTokenRequest } from "../utils/api";
 import { useEffect, useState } from "react";
 import { setCookie } from "../utils/helpers";
 
 export function ProtectedRoute({ children, ...rest }) {
-  
   const [isValidToken, setIsValidToken] = useState(null);
   const hasToken = localStorage.getItem('token');
+
+  const location = useLocation();
 
   useEffect(() => {
     refreshTokenRequest()
@@ -29,10 +30,9 @@ export function ProtectedRoute({ children, ...rest }) {
   if (isValidToken === null) return null;
 
   return (
-    <Route
-      {...rest}
-      render={({ location }) => {
-        return (!hasToken || !isValidToken)
+    <Route path="/profile">
+      {
+        (!hasToken || !isValidToken)
           ? (<Redirect
             to={{
               pathname: '/login',
@@ -40,7 +40,21 @@ export function ProtectedRoute({ children, ...rest }) {
             }}
           />)
           : children
-      }}
-    />
+      }
+    </Route>
+    /* <Route
+       {...rest}
+       render={({ location }) => {
+         console.log('locationInsideRender', location)
+         return (!hasToken || !isValidToken)
+           ? (<Redirect
+             to={{
+               pathname: '/login',
+               state: { from: location }
+             }}
+           />)
+           : children
+       }}
+     />*/
   );
 }

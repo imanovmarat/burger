@@ -7,9 +7,10 @@ import {
   CHANGE_SELECTED_INGREDIENTS_ORDER,
   REMOVE_SELECTED_INGREDIENT
 } from "../../services/actions/burgerConstructor";
+import PropTypes from "prop-types";
+import { ingredientPropTypes } from "../../utils/ingredientPropTypes";
 
 function DraggableCard({ meal, index, localId }) {
-
   const dispatch = useDispatch();
   const ref = useRef(null);
   const [, drop] = useDrop({
@@ -86,3 +87,9 @@ function DraggableCard({ meal, index, localId }) {
 }
 
 export default DraggableCard;
+
+DraggableCard.propTypes = {
+  meal: PropTypes.shape(ingredientPropTypes).isRequired,
+  index: PropTypes.number.isRequired,
+  localId: PropTypes.string.isRequired
+}

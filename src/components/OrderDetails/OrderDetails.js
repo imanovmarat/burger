@@ -5,7 +5,10 @@ import { useSelector } from "react-redux";
 
 function OrderDetails() {
   const { orderData } = useSelector(({ order }) => order)
-  if (!orderData) return null;
+
+  if (!orderData) {
+    return <div className={styles.loader}>Loading...</div>;
+  }
   return (
     <div className={styles.container}>
       <p className={`${styles.title} text text_type_digits-large mt-20 mb-8`}>{orderData.order.number}</p>

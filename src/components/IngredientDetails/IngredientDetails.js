@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styles from './IngredientDetails.module.css';
 import { useSelector } from "react-redux";
-import { useLocation, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 
 function IngredientDetails() {
   const params = useParams();
   const location = useLocation();
-  const background = location.state && location.state.background;
+  const history = useHistory();
+  const background = history?.action === 'PUSH' && location.state && location.state.background;
   let { selectedIngredient } = useSelector(({ ingredientDetails }) => ingredientDetails);
   const { ingredients, ingredientsRequest, ingredientsFailed } = useSelector(({ ingredients }) => ingredients)
 
