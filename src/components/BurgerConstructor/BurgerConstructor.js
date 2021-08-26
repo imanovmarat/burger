@@ -91,7 +91,7 @@ export function BurgerConstructor() {
     <div ref={dropTarget} className={styles.wrapper}>
 
       <div className={styles.constructor}>
-        {bunData && <div className="pl-8 pr-3">
+        {bunData && <div className="pl-8 pr-3" data-test-id='ctr-bun-top'>
           <ConstructorElement
             type="top"
             isLocked={true}
@@ -104,7 +104,7 @@ export function BurgerConstructor() {
         <div className={`${styles.meals} pr-1`}>
           {renderElement}
         </div>
-        {bunData && <div className="pl-8">
+        {bunData && <div className="pl-8" data-test-id='ctr-bun-bottom'>
           <ConstructorElement
             type="bottom"
             isLocked={true}
