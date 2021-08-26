@@ -22,7 +22,7 @@ export function MealCard({ data, onClick }) {
                             },
                           });
   return (
-    <article ref={ref} className={styles.container} onClick={handleCardClick}>
+    <article ref={ref} className={styles.container} onClick={handleCardClick} data-test-id={`ingredient-${data._id}`}>
       <div className={`${styles.img_wrap} pl-4 pr-4`}>
         {/*{quantity > 0 && (<div className={`${styles.quantity} text text_type_digits-default`}>{quantity}</div>)}*/}
         {data.type === 'bun'

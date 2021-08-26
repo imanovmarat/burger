@@ -45,10 +45,10 @@ function App() {
           <Switch location={background || location}>
             <Route exact path='/'>
               <DndProvider backend={HTML5Backend}>
-                <section className={`${styles.section} mr-10`}>
+                <section className={`${styles.section} mr-10`} data-test-id={"ingredients-skeleton"}>
                   <BurgerIngredients/>
                 </section>
-                <section className={`${styles.section} pt-25 pl-4`}>
+                <section className={`${styles.section} pt-25 pl-4`} data-test-id={"constructor-container"}>
                   <BurgerConstructor/>
                 </section>
               </DndProvider>

@@ -72,7 +72,7 @@ function DraggableCard({ meal, index, localId }) {
              })
   }
   return (
-    <div className={styles.meal} key={localId} ref={ref} style={{ opacity }}>
+    <div className={styles.meal} key={localId} ref={ref} style={{ opacity }} data-test-id={`ctr-item-${meal._id}`}>
       <div className="mr-2">
         <DragIcon type="primary"/>
       </div>
